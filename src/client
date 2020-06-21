@@ -1,0 +1,27 @@
+#!/usr/bin/perl -w
+
+use strict;
+use warnings;
+
+binmode STDOUT, ":utf8";
+use utf8;
+
+use JSON qw(decode_json);
+
+my $listUrl = 'https://vvopice.zhouba.cz/api/posts/list?limit=5&offset=0';
+
+my $data = decode_json getResponse($listUrl);
+for my $r (@$data) {
+	my $c = parse($r->{'text'});
+	print "$r->{'inserted'}\t$r->{'title'}\n\n $c\n\n\n";
+}
+
+sub getResponse {
+	my $url = shift;
+	my $query = "wget -qO - \'". $url . "\'";
+	$query = `$query`;
+}
+
+sub parse {
+	my $c = shift =~ s/<br \/>//gr;
+}
