@@ -6,27 +6,77 @@ use warnings;
 binmode STDOUT, ":utf8";
 use utf8;
 
-use JSON qw(decode_json);
+use JSON;
+use Getopt::Long;
+&Getopt::Long::config('bundling');
+
+my ($help, $post, $name);
+GetOptions(
+    "h|help" => \$help,
+    "p|post=s" => \$post,
+    "n|name=s" => \$name,
+);
 
 my $baseUrl = 'https://vvopice.zhouba.cz/api';
-my $routeGetList = '/posts/list?limit=5&offset=0';
+my $routeGet = '/posts/list?limit=5&offset=0';
+my $routePost = '/posts/insert';
 
-showPosts($baseUrl, $routeGetList);
+help() if $help;
 
-sub showPosts {
-    my $data = decode_json getResponse(shift . shift);
+if ($post) {
+    my %payload = ("nickname" => $name, "text" => $post, "apemonster" => \1);
+    submit_post($baseUrl, $routePost, encode_json \%payload);
+}
+
+show_posts($baseUrl, $routeGet);
+
+sub show_posts {
+    my $data = decode_json get_response(shift . shift);
     for my $r (@$data) {
 	    my $c = parse($r->{'text'});
 	    print "$r->{'inserted'}\t$r->{'title'}\n\n $c\n\n\n";
     }
 }
 
-sub getResponse {
+sub submit_post {
+    post_response(shift . shift, shift);
+}
+
+sub get_response {
 	my $url = shift;
-	my $query = "wget -qO - \'". $url . "\'";
-	$query = `$query`;
+	my $q = "wget -qO - \'". $url . "\'";
+	$q = `$q`;
+}
+
+sub post_response {
+	my $url = shift;
+	my $payload = shift;
+	my $q = "curl -sd '$payload' -H 'Content-Type: application/json' -X POST $url";
+	$q = `$q`;
 }
 
 sub parse {
 	my $c = shift =~ s/<br \/>//gr;
+}
+
+sub help {
+    print <<HLP;
+
+vvopice console client
+
+Usage: $0 [-p 'new post contents' [-n 'poster name']] [-h]
+
+Provide <-p|--post> param to switch to submit mode.
+Submit mode submits a new post before printing latest posts.
+
+Options:
+    -h, --help
+    Get this help message
+    -p, --post
+    New post contents
+    -n, --name
+    Name of the poster
+
+HLP
+    exit(3);
 }
