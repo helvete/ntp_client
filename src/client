@@ -14,8 +14,7 @@ my $routeGetList = '/posts/list?limit=5&offset=0';
 showPosts($baseUrl, $routeGetList);
 
 sub showPosts {
-    my $listUrl = shift . shift;
-    my $data = decode_json getResponse($listUrl);
+    my $data = decode_json getResponse(shift . shift);
     for my $r (@$data) {
 	    my $c = parse($r->{'text'});
 	    print "$r->{'inserted'}\t$r->{'title'}\n\n $c\n\n\n";
