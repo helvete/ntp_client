@@ -1,4 +1,4 @@
-#vvopice console client
+# vvopice console client
 
 This is a simple console client for vvopice site.
 Needs perl JSON module in order to work.
@@ -7,7 +7,7 @@ Needs perl JSON module in order to work.
 ```
 Usage: $0 [-p 'new post contents' [-n 'poster name']] [-h]
 
-Provide `<-p|--post>` param to switch to submit mode.
+Provide <-p|--post> param to switch to submit mode.
 Submit mode submits a new post before printing latest posts.
 
 Options:
