@@ -44,14 +44,14 @@ sub submit_post {
 
 sub get_response {
     my $url = shift;
-    my $q = "wget -qO - \'". $url . "\'";
+    my $q = "wget -qO - '$url'";
     $q = `$q`;
 }
 
 sub post_response {
     my $url = shift;
     my $payload = shift;
-    my $q = "curl -sd '$payload' -H 'Content-Type: application/json' -X POST $url";
+    my $q = "curl -sd '$payload' -H 'Content-Type: application/json' -X POST '$url'";
     $q = `$q`;
 }
 
