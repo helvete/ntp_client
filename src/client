@@ -8,12 +8,18 @@ use utf8;
 
 use JSON qw(decode_json);
 
-my $listUrl = 'https://vvopice.zhouba.cz/api/posts/list?limit=5&offset=0';
+my $baseUrl = 'https://vvopice.zhouba.cz/api';
+my $routeGetList = '/posts/list?limit=5&offset=0';
 
-my $data = decode_json getResponse($listUrl);
-for my $r (@$data) {
-	my $c = parse($r->{'text'});
-	print "$r->{'inserted'}\t$r->{'title'}\n\n $c\n\n\n";
+showPosts($baseUrl, $routeGetList);
+
+sub showPosts {
+    my $listUrl = shift . shift;
+    my $data = decode_json getResponse($listUrl);
+    for my $r (@$data) {
+	    my $c = parse($r->{'text'});
+	    print "$r->{'inserted'}\t$r->{'title'}\n\n $c\n\n\n";
+    }
 }
 
 sub getResponse {
