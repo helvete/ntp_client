@@ -33,8 +33,8 @@ show_posts($baseUrl, $routeGet);
 sub show_posts {
     my $data = decode_json get_response(shift . shift);
     for my $r (@$data) {
-	    my $c = parse($r->{'text'});
-	    print "$r->{'inserted'}\t$r->{'title'}\n\n $c\n\n\n";
+        my $c = parse($r->{'text'});
+        print "$r->{'inserted'}\t$r->{'title'}\n\n $c\n\n\n";
     }
 }
 
@@ -43,20 +43,20 @@ sub submit_post {
 }
 
 sub get_response {
-	my $url = shift;
-	my $q = "wget -qO - \'". $url . "\'";
-	$q = `$q`;
+    my $url = shift;
+    my $q = "wget -qO - \'". $url . "\'";
+    $q = `$q`;
 }
 
 sub post_response {
-	my $url = shift;
-	my $payload = shift;
-	my $q = "curl -sd '$payload' -H 'Content-Type: application/json' -X POST $url";
-	$q = `$q`;
+    my $url = shift;
+    my $payload = shift;
+    my $q = "curl -sd '$payload' -H 'Content-Type: application/json' -X POST $url";
+    $q = `$q`;
 }
 
 sub parse {
-	my $c = shift =~ s/<br \/>//gr;
+    my $c = shift =~ s/<br \/>//gr;
 }
 
 sub help {
