@@ -19,7 +19,7 @@ GetOptions(
 
 my $baseUrl = 'https://vvopice.zhouba.cz/api';
 my $routeGet = '/posts/list?limit=5&offset=0';
-my $routePost = '/posts/insert';
+my $routePost = '/posts';
 
 help() if $help;
 
